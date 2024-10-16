@@ -8,69 +8,79 @@ const initialProducts = [
         id: 1,
         name: 'The Legend of Zelda: Breath of the Wild',
         price: 49.99,
-        image: `${process.env.PUBLIC_URL}/image/image_1.jpg`, // Correctly referencing the image in public
-        description: 'is an open-world action-adventure game set in a beautifully crafted, vast landscape of Hyrule. Players control Link, who awakens from a long slumber to defeat Calamity Ganon and rescue Princess Zelda. The game emphasizes exploration, allowing players to tackle challenges in various ways, solve intricate puzzles, and discover secrets across diverse environments, from lush forests to snow-capped mountains. Its blend of combat, crafting, and environmental interaction creates a rich, immersive experience.'
+        image: `${process.env.PUBLIC_URL}/image/image_1.jpg`,
+        description: 'is an open-world action-adventure game set in a beautifully crafted, vast landscape of Hyrule. Players control Link, who awakens from a long slumber to defeat Calamity Ganon and rescue Princess Zelda. The game emphasizes exploration, allowing players to tackle challenges in various ways, solve intricate puzzles, and discover secrets across diverse environments, from lush forests to snow-capped mountains. Its blend of combat, crafting, and environmental interaction creates a rich, immersive experience.',
+        reviews: [] // Initialize with an empty array for reviews
     },
     { 
         id: 2, 
         name: 'Super Mario Odyssey', 
         price: 39.99, 
         image: `${process.env.PUBLIC_URL}/image/image_2.jpg`,
-        description: 'is a platform game that follows Mario on a globe-trotting adventure to rescue Princess Peach from Bowser. With innovative gameplay mechanics, including the ability to capture enemies and objects, Mario explores vibrant worlds filled with secrets, challenges, and collectibles.' 
+        description: 'is a platform game that follows Mario on a globe-trotting adventure to rescue Princess Peach from Bowser. With innovative gameplay mechanics, including the ability to capture enemies and objects, Mario explores vibrant worlds filled with secrets, challenges, and collectibles.',
+        reviews: []
     },
     { 
         id: 3, 
         name: 'Red Dead Redemption 2', 
         price: 59.99, 
-        image: `${process.env.PUBLIC_URL}/image/image_3.jpeg`, 
-        description: 'is a narrative-driven action-adventure game set in the late 1800s American West. Players assume the role of Arthur Morgan, a member of the Van der Linde gang, and experience a richly detailed open world filled with dynamic characters, thrilling gunfights, and immersive storytelling.' 
+        image: `${process.env.PUBLIC_URL}/image/image_3.jpeg`,
+        reviews: [],
+        description: 'is a narrative-driven action-adventure game set in the late 1800s American West. Players assume the role of Arthur Morgan, a member of the Van der Linde gang, and experience a richly detailed open world filled with dynamic characters, thrilling gunfights, and immersive storytelling.',
     },
     { 
         id: 4, 
         name: 'The Witcher 3: Wild Hunt', 
-        price: 30.99, 
+        price: 30.99,
+        reviews: [],
         image: `${process.env.PUBLIC_URL}/image/image_4.jpg`, 
         description: 'is a critically acclaimed role-playing game where players control Geralt of Rivia, a monster hunter, as he searches for his missing adopted daughter. The game features an expansive open world with deep storytelling, moral choices, and engaging combat.' 
     },
     { 
         id: 5, 
         name: 'God of War', 
-        price: 49.99, 
+        price: 49.99,
+        reviews: [], 
         image: `${process.env.PUBLIC_URL}/image/image_5.jpg`, 
         description: 'is an action-adventure game that follows Kratos, a former Greek god, on a journey through Norse mythology to spread the ashes of his deceased wife. The game combines brutal combat with emotional storytelling and stunning visuals.' 
     },
     { 
         id: 6, 
         name: 'Animal Crossing: New Horizons', 
-        price: 39.99, 
+        price: 39.99,
+        reviews: [], 
         image: `${process.env.PUBLIC_URL}/image/image_6.jpg`, 
         description: 'is a life simulation game where players create and manage their own island paradise. With charming characters, seasonal events, and extensive customization options, players can build and decorate their homes while interacting with adorable animal villagers.' 
     },
     { 
         id: 7, 
         name: 'call of duty black ops 6', 
-        price: 59.00, 
+        price: 59.00,
+        reviews: [], 
         image: `${process.env.PUBLIC_URL}/image/image_7.jpg`, 
         description: 'is a free-to-play battle royale game that combines traditional Call of Duty gameplay with large-scale multiplayer action. Players parachute onto a massive map, scavenge for weapons, and compete to be the last one standing.' 
     },
     { 
         id: 8, 
         name: 'Minecraft', 
-        price: 29.99, 
+        price: 29.99,
+        reviews: [], 
         image: `${process.env.PUBLIC_URL}/image/image_8.jpg`, 
         description: 'is a sandbox game that allows players to build and explore virtual worlds made up of blocks. With various gameplay modes, including survival and creative, players can craft, mine, and unleash their creativity in a procedurally generated environment.' 
     },
     { 
         id: 9, 
         name: 'Final Fantasy VII Remake', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [], 
         image: `${process.env.PUBLIC_URL}/image/image_9.jpg`, 
         description: 'is a reimagining of the classic RPG that follows Cloud Strife as he joins a group of eco-terrorists to fight against the oppressive Shinra Corporation. The game features real-time combat and stunning visuals, immersing players in the world of Gaia.' 
     },
     { 
         id: 10, 
         name: 'Persona 5 Royal', 
-        price: 28.99, 
+        price: 28.99,
+        reviews: [], 
         image: `${process.env.PUBLIC_URL}/image/image_10.jpg`,
         description: 'is an enhanced version of the acclaimed JRPG that follows a group of high school students who form the Phantom Thieves to change the hearts of corrupt adults. With turn-based combat, social simulation elements, and an engaging story, it captivates players with its unique art style and music.' 
     },
@@ -78,40 +88,46 @@ const initialProducts = [
         id: 11, 
         name: 'Overwatch', 
         price: 39.99, 
+        reviews: [],
         image: `${process.env.PUBLIC_URL}/image/image_11.jpg`, 
         description: 'is a team-based multiplayer first-person shooter featuring a diverse cast of heroes, each with unique abilities. Players work together to achieve objectives across various maps in this fast-paced and colorful shooter.' 
     },
     { 
         id: 12, 
         name: 'Forza Horizon 5', 
-        price: 50.00, 
+        price: 50.00,
+        reviews: [], 
         image: `${process.env.PUBLIC_URL}/image/image_12.jpg`, 
         description: 'is a free-to-play online multiplayer first-person shooter with RPG elements. Players take on the role of Guardians, protecting humanity from various threats in a vast universe filled with striking visuals and engaging gameplay.' 
     },
     { 
         id: 13, 
         name: 'Ghost of Tsushima', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [], 
         image: `${process.env.PUBLIC_URL}/image/image_13.jpg`, 
         description: 'is an open-world action-adventure game set in feudal Japan during the Mongol invasion. Players control Jin Sakai, a samurai who must learn to adapt and become a ghost to protect his home from the invading forces.' 
     },
     { 
         id: 14, 
-        name: 'Hades', 
+        name: 'Hades',
+        reviews: [], 
         price: 20.99, 
         image: `${process.env.PUBLIC_URL}/image/image_14.jpg`, 
         description: 'is a rogue-like dungeon crawler where players control Zagreus, the son of Hades, as he attempts to escape the Underworld. With fast-paced combat and a unique narrative structure, it offers a fresh take on Greek mythology.' 
     },
     { 
         id: 15, 
-        name: 'Doom Eternal', 
+        name: 'Doom Eternal',
+        reviews: [], 
         price: 34.99, 
         image: `${process.env.PUBLIC_URL}/image/image_15.jpg`, 
         description: 'is a first-person shooter that continues the story of the Doom Slayer in a battle against demonic forces. With brutal combat mechanics and stunning graphics, it delivers a thrilling and action-packed experience.' 
     },
     { 
         id: 16, 
-        name: 'Sekiro: Shadows Die Twice', 
+        name: 'Sekiro: Shadows Die Twice',
+        reviews: [], 
         price: 59.99, 
         image: `${process.env.PUBLIC_URL}/image/image_16.jpg`, 
         description: 'is an action-adventure game set in a reimagined late 1500s Sengoku period Japan. Players control a shinobi named Wolf as he seeks revenge against his captors and uncovers the secrets of his past.' 
@@ -119,126 +135,144 @@ const initialProducts = [
     { 
         id: 17, 
         name: 'The Last of Us Part II', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [], 
         image:`${process.env.PUBLIC_URL}/image/image_17.jpg`, 
         description: 'is a narrative-driven action-adventure game that continues the story of Ellie in a post-apocalyptic world. It explores themes of revenge, loss, and the consequences of choices in a beautifully crafted environment.' 
     },
     { 
         id: 18, 
         name: 'Death Stranding', 
-        price: 39.99, 
+        price: 39.99,
+        reviews: [], 
         image:`${process.env.PUBLIC_URL}/image/image_18.jpg`, 
         description: 'is an open-world action game that follows Sam Porter Bridges, who must deliver supplies across a desolate America. With unique gameplay mechanics and a captivating story, it pushes the boundaries of conventional gaming.' 
     },
     { 
         id: 19, 
         name: 'Cyberpunk 2077', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [], 
         image:`${process.env.PUBLIC_URL}/image/image_19.jpg`, 
         description: 'is an open-world RPG set in a dystopian future where players control V, a customizable mercenary. The game offers a richly detailed world filled with characters, missions, and choices that impact the narrative.' 
     },
     { 
         id: 20, 
         name: 'Resident Evil Village', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [], 
         image:`${process.env.PUBLIC_URL}/image/image_20.jpg`, 
         description: 'is a survival horror game that follows Ethan Winters as he searches for his kidnapped daughter in a mysterious village filled with terrifying creatures. With immersive gameplay and stunning visuals, it enhances the iconic series.' 
     },
     { 
         id: 21, 
         name: 'Forza Horizon 4', 
-        price: 20.99, 
+        price: 20.99,
+        reviews: [], 
         image:`${process.env.PUBLIC_URL}/image/image_21.jpg`, 
         description: 'is an open-world racing game set in a fictionalized version of Great Britain. Players can explore the world in various vehicles, participate in events, and experience dynamic seasons that change gameplay.' 
     },
     { 
         id: 22, 
         name: 'FC 25', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [], 
         image:`${process.env.PUBLIC_URL}/image/FC_25.png`, 
         description: 'is a football simulation game that features realistic gameplay and various modes, including Ultimate Team and Career Mode. Players can control their favorite teams and compete against others online.' 
     },
     { 
         id: 23, 
         name: 'Madden NFL 25', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [], 
         image:`${process.env.PUBLIC_URL}/image/image_22.jpg`, 
         description: 'is an American football video game that offers an authentic simulation of the NFL experience, with various modes, including Franchise and Ultimate Team, allowing players to manage their teams.' 
     },
     { 
         id: 24, 
         name: 'Assassin’s Creed Valhalla', 
-        price: 23.99, 
+        price: 23.99,
+        reviews: [], 
         image:`${process.env.PUBLIC_URL}/image/image_23.jpg`, 
         description: 'is an action role-playing game that follows Eivor, a Viking raider, during the invasion of England. Players can explore a vast open world, engage in combat, and build their settlement.' 
     },
     { 
         id: 25, 
         name: 'Hollow Knight', 
-        price: 14.99, 
+        price: 14.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_24.jpg`, 
         description: 'is a metroidvania-style action-adventure game set in a beautifully hand-drawn world. Players control a silent knight as they explore a vast interconnected kingdom filled with challenging enemies and secrets.' 
     },
     { 
         id: 26, 
         name: 'Cuphead', 
-        price: 19.99, 
+        price: 19.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_25.jpg`, 
         description: 'is a run-and-gun indie game known for its 1930s cartoon art style. Players control Cuphead as he battles challenging bosses and platforming levels to repay his debt to the devil.' 
     },
     { 
         id: 27, 
         name: 'Stardew Valley', 
-        price: 14.99, 
+        price: 14.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_26.jpg`, 
         description: 'is a farming simulation game where players inherit a run-down farm and work to restore it. With elements of farming, crafting, and building relationships with townsfolk, it offers a relaxing gameplay experience.' 
     },
     { 
         id: 28, 
         name: 'Celeste', 
-        price: 19.99, 
+        price: 19.99,
+        reviews: [],
         image:`${process.env.PUBLIC_URL}/image/image_27.jpg`, 
         description: 'is a platformer that tells the story of Madeline as she climbs Celeste Mountain. With tight controls and challenging levels, it explores themes of mental health and perseverance.' 
     },
     { 
         id: 29, 
         name: 'The Outer Worlds', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_28.jpg`, 
         description: 'is a first-person RPG set in an alternate future where mega-corporations control colonization. Players navigate a retro-futuristic world, make choices that affect the story, and interact with unique characters.' 
     },
     { 
         id: 30, 
         name: 'Marvel’s Spider-Man', 
-        price: 39.99, 
+        price: 39.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_29.jpg`, 
         description: 'is an open-world action-adventure game that follows Peter Parker as Spider-Man. With fluid combat and web-swinging mechanics, players can explore New York City and take on iconic villains.' 
     },
     { 
         id: 31, 
         name: 'Fall Guys: Ultimate Knockout', 
-        price: 29.99, 
+        price: 29.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_30.jpg`, 
         description: 'is a multiplayer party game where players compete in a series of chaotic obstacle courses. With colorful visuals and a whimsical tone, it provides fun and entertaining gameplay for all ages.' 
     },
     { 
         id: 32, 
         name: 'Dead Cells', 
-        price: 24.99, 
+        price: 24.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_31.jpg`, 
         description: 'is a rogue-like metroidvania that combines fast-paced combat and exploration. Players navigate procedurally generated levels and face challenging enemies, with permanent upgrades available through progression.' 
     },
     { 
         id: 33, 
         name: 'Nioh 2', 
-        price: 59.99, 
+        price: 59.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_32.jpg`, 
         description: 'is an action RPG set in a dark fantasy version of the Sengoku period in Japan. Players create their own character and engage in challenging combat against supernatural foes.' 
     },
     { 
         id: 34, 
         name: 'Ghostrunner', 
-        price: 29.99, 
+        price: 29.99,
+        reviews: [],  
         image:`${process.env.PUBLIC_URL}/image/image_33.jpg`, 
         description: 'is a first-person action game that combines parkour and combat in a cyberpunk world. Players must use agility and skill to navigate levels and defeat enemies in a fast-paced environment.' 
     },
@@ -706,7 +740,6 @@ const initialProducts = [
 ]
 
 
-
 const App = () => {
     const [products] = useState(
         initialProducts.map(product => ({
@@ -717,19 +750,19 @@ const App = () => {
     const [cart, setCart] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [minPrice, setMinPrice] = useState(0); // State for minimum price filter
-    const [filterOrder, setFilterOrder] = useState('asc'); // State for filtering order (ascending or descending)
-    const [showTopTen, setShowTopTen] = useState(false); // State to control showing top ten products
+    const [minPrice, setMinPrice] = useState(0);
+    const [filterOrder, setFilterOrder] = useState('asc');
+    const [showTopTen, setShowTopTen] = useState(false);
 
     // Function to add item to cart
     const addToCart = (product) => {
         setCart([...cart, product]);
-        closeModal(); // Close modal after adding to cart
+        closeModal();
     };
 
     // Function to remove item from cart
-    const removeFromCart = (productToRemove) => {
-        setCart(cart.filter(product => product.id !== productToRemove.id));
+    const removeFromCart = (productId) => {
+        setCart(cart.filter(product => product.id !== productId));
     };
 
     // Function to clear the cart
@@ -754,25 +787,22 @@ const App = () => {
         .filter(product => parseFloat(product.discountedPrice) >= minPrice)
         .sort((a, b) => filterOrder === 'asc' ? a.discountedPrice - b.discountedPrice : b.discountedPrice - a.discountedPrice);
 
-    // Combined filter and sort options
     const handleSelectChange = (e) => {
         const value = e.target.value;
 
-        // Update showTopTen based on selected value
         if (value.includes('Top 10')) {
             setShowTopTen(true);
         } else {
             setShowTopTen(false);
         }
 
-        // Update sorting order and minimum price
         if (value.includes('Ascending')) {
             setFilterOrder('asc');
         } else if (value.includes('Descending')) {
             setFilterOrder('desc');
         }
 
-        const priceValue = value.match(/(\d+)/); // Extract price from the selected option
+        const priceValue = value.match(/(\d+)/);
         if (priceValue) {
             setMinPrice(parseFloat(priceValue[0]));
         }
@@ -780,9 +810,9 @@ const App = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
-            <main className="flex-grow mx-auto px-1 py-8 pt-20"> {/* Added padding-top for navbar */}
+            <main className="flex-grow mx-auto px-1 py-8 pt-20">
                 <div className="flex flex-col mb-4">
-                <label className="text-gray-800 font-medium text-lg mt-3">Options:</label> {/* Added mt-2 for margin */}
+                    <label className="text-gray-800 font-medium text-lg mt-3">Options:</label>
                     <select
                         onChange={handleSelectChange}
                         className="border border-gray-300 rounded-lg px-4 py-2"
@@ -832,65 +862,61 @@ const App = () => {
 };
 
 const Cart = ({ cart, removeFromCart, clearCart }) => {
-    const total = cart.reduce((acc, item) => acc + parseFloat(item.discountedPrice), 0);
-
     return (
-        <div className="flex justify-end mt-4">
-            <div
-                className="cart bg-white rounded-lg shadow-lg relative"
-                style={{ width: '400px', height: '600px', padding: '24px' }} // Set width and fixed height
-            >
-                <h2 className="text-lg font-semibold text-gray-800">Shopping Cart</h2>
-                <div className="cart-items" style={{ height: 'calc(100% - 100px)', overflowY: 'auto' }}>
-                    {cart.length === 0 ? (
-                        <p className="text-gray-600">Your cart is empty.</p>
-                    ) : (
-                        cart.map(item => (
-                            <div key={item.id} className="flex justify-between items-center my-2 border-b border-gray-300 pb-2">
-                                <span className="text-gray-700">
-                                    {item.name} - <span className="font-semibold">${item.discountedPrice}</span>
-                                </span>
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold mb-4">Shopping Cart</h2>
+            {cart.length === 0 ? (
+                <p className="text-gray-500">Your cart is empty.</p>
+            ) : (
+                <>
+                    <ul className="space-y-4">
+                        {cart.map((item) => (
+                            <li key={item.id} className="flex justify-between items-center border-b pb-2">
+                                <div className="flex-1">
+                                    <p className="font-semibold">{item.name}</p>
+                                    <p className="text-gray-600">Price: ${item.discountedPrice}</p>
+                                </div>
                                 <button
-                                    onClick={() => removeFromCart(item)}
-                                    className="bg-red-500 text-white px-2 rounded hover:bg-red-600 transition"
+                                    onClick={() => removeFromCart(item.id)} // Pass the product id to removeFromCart
+                                    className="text-red-600 hover:text-red-800"
                                 >
                                     Remove
                                 </button>
-                            </div>
-                        ))
-                    )}
-                </div>
-                {cart.length > 0 && (
-                    <div className="flex flex-col mt-4">
-                        <div className="flex justify-between items-center">
-                            <span className="font-bold text-lg">
-                                Total: <span className="text-green-600">${total.toFixed(2)}</span>
-                            </span>
-                        </div>
-                        <div className="flex">
-                            <button
-                                onClick={clearCart}
-                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition mr-2"
-                            >
-                                Clear Cart
-                            </button>
-                            <Link to="/checkout">
-                                <button
-                                    className="bg-green-500 text-white px-10 py-2 rounded hover:bg-green-700 transition"
-                                >
-                                    Checkout
-                                </button>
-                            </Link>
-                        </div>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="mt-4 flex justify-between">
+                        <button 
+                            onClick={clearCart} 
+                            className="bg-red-500 text-white rounded px-4 py-2 hover:bg-red-600 transition-colors duration-300"
+                        >
+                            Clear Cart
+                        </button>
+                        <Link 
+                            to="/checkout" // Use Link to navigate to the checkout page
+                            className="bg-green-500 text-white rounded px-4 py-2 hover:bg-green-600 transition-colors duration-300 text-center"
+                        >
+                            Checkout
+                        </Link>
                     </div>
-                )}
-            </div>
+                </>
+            )}
         </div>
     );
 };
 
 const Modal = ({ product, onClose, addToCart }) => {
+    const [reviewText, setReviewText] = useState('');
+
     if (!product) return null;
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (reviewText.trim()) {
+            product.reviews.push(reviewText); // Update product's reviews
+            setReviewText(''); // Clear the input field
+        }
+    };
 
     return (
         <div className="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -903,7 +929,7 @@ const Modal = ({ product, onClose, addToCart }) => {
                         <p>Discounted Price: ${product.discountedPrice}</p>
                         <p>{product.description}</p>
                         <button 
-                            onClick={() => { addToCart(product); onClose(); }} // Ensure modal closes after adding to cart
+                            onClick={() => { addToCart(product); onClose(); }} // Close modal after adding to cart
                             className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
                         >
                             Add to Cart
@@ -916,10 +942,34 @@ const Modal = ({ product, onClose, addToCart }) => {
                         </button>
                     </div>
                 </div>
+
+                {/* Reviews Section */}
+                <h3 className="text-lg font-semibold mt-4">Reviews:</h3>
+                {product.reviews.length === 0 ? (
+                    <p>No reviews yet.</p>
+                ) : (
+                    <ul className="mt-2">
+                        {product.reviews.map((review, index) => (
+                            <li key={index} className="border-b border-gray-300 py-2">{review}</li>
+                        ))}
+                    </ul>
+                )}
+                <form onSubmit={handleSubmit} className="mt-4">
+                    <textarea 
+                        value={reviewText} 
+                        onChange={(e) => setReviewText(e.target.value)} 
+                        placeholder="Write a review..."
+                        className="border border-gray-300 p-2 w-full rounded"
+                    />
+                    <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded mt-2">
+                        Submit Review
+                    </button>
+                </form>
             </div>
         </div>
     );
 };
+
 
 export default App;
 export { initialProducts }; // Exporting initialProducts for testing

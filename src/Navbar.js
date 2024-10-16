@@ -50,7 +50,9 @@ const Navbar = ({ username, onLogout }) => {
                     aria-haspopup="true" // Indicates that a popup is triggered
                     aria-expanded={isSubMenuOpen} // Indicates the state of the submenu
                   >
-                    {username}
+                    {/* Welcome message with highlighted username */}
+                    <span className="navbar-welcome-text">Welcome, </span>
+                    <span className="navbar-username">{username}</span>
                     <span className="navbar-dropdown-indicator"> ▼</span> {/* Indicator for dropdown */}
                   </div>
                 ) : (

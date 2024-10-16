@@ -16,6 +16,7 @@ const NovaMart = () => {
 
     // Function to remove product from cart
     const removeFromCart = (productId) => {
+        console.log("Removing product with ID:", productId); // Debugging line
         setCart((prevCart) => prevCart.filter(item => item.id !== productId));
     };
 
@@ -26,7 +27,6 @@ const NovaMart = () => {
 
     // Function to handle checkout
     const handleCheckout = () => {
-        // Logic for checkout process, e.g., redirecting to a payment page
         console.log("Proceeding to checkout with the following items:", cart);
     };
 

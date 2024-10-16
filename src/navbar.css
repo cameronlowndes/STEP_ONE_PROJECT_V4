@@ -68,7 +68,6 @@
 }
 
 .navbar-login {
-
     position: absolute; /* Position it absolutely */
     top: 9px; /* Adjust the vertical position */
     right: 60px; /* Adjust the horizontal position */
@@ -76,14 +75,13 @@
     padding: 0.5rem 1rem; /* Add some padding */
     border: 1px solid white; /* Optional border */
     border-radius: 4px; /* Optional rounded corners */
+    font-size: 1em; /* Ensure it matches the username size */
 }
 .navbar-submenu {
     display: flex; 
     top: 100%; /* Position below the main link */
-    left: 0;
     background-color: lightgray; /* Background color for the submenu */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    list-style-type: none;
     padding: 20px 0;
     display: flex;
     flex-direction: column;
@@ -116,3 +114,9 @@
     cursor: pointer; /* Change cursor to pointer on hover for login/logout */
   }
   
+  .navbar-welcome-text {
+    font-weight: bold; /* Make navigation links bold */
+    margin-right: 5px; /* Space between welcome text and username */
+    font-size: 1.5em; /* Ensure it matches the username size */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Shadow for contrast */
+  }
