@@ -1,0 +1,70 @@
+/* navbar.css */
+
+/* General styles for the header */
+.navbar-header {
+    background: linear-gradient(to right, #38a169, #2f855a); /* Custom gradient */
+    padding: 1rem; /* Vertical padding */
+    color: white;
+    position: fixed; /* Fixed position for navbar */
+    top: 0; /* Stick to the top */
+    left: 0;
+    right: 0;
+    z-index: 30; /* Ensure it appears above other content */
+    height: 90px; /* Set a fixed height for the navbar */
+}
+
+.navbar-container {
+    display: flex; /* Use Flexbox for layout */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between logo and title/nav section */
+    height: 100%; /* Full height of the header */
+    padding: 0 2rem; /* Horizontal padding for container */
+}
+
+/* Logo styles */
+.navbar-logo-image {
+    height: 50px; /* Height of the logo */
+}
+
+/* Title container styles */
+.navbar-title-container {
+    display: flex; /* Use Flexbox for title and nav */
+    flex-direction: column; /* Stack title and nav vertically */
+    align-items: center; /* Center title and nav items */
+    flex-grow: 2; /* Allow title to take up available space */
+    text-align: center; /* Center text within title-container */
+    margin-left: 300px; /* Move title container to the right */
+}
+
+/* Title styles */
+.navbar-title {
+    font-size: 2rem; /* Adjust font size */
+    font-weight: bold; /* Make title bold */
+    margin-bottom: 0.5rem; /* Space between title and nav */
+    margin-left: -400px;
+}
+
+/* Navigation links styles */
+.navbar-nav-links {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Flexbox for layout */
+    margin-left: -280px;
+}
+
+/* Individual nav item styles */
+.navbar-nav-item {
+    margin-right: 20px; /* Space between nav items */
+}
+
+/* Link styles */
+.navbar-nav-link {
+    display: flex; /* Flex layout for nav items */
+    justify-content: center; /* Center nav items */
+    list-style: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+/* Hover effect for links */
