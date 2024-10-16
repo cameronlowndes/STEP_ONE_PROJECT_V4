@@ -1,9 +1,23 @@
-import React from 'react';
+// src/components/Navbar.js
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css'; // Ensure this path is correct
 
-const Navbar = () => {
+const Navbar = ({ username, onLogout }) => {
+  const [isSubMenuOpen, setSubMenuOpen] = useState(false); // State for submenu visibility
   const logo = `${process.env.PUBLIC_URL}/image/logo.jpg`; // Path to your logo
+
+  // Function to toggle the submenu visibility
+  const toggleSubMenu = () => {
+    console.log("Toggling submenu"); // Debugging log
+    setSubMenuOpen((prev) => !prev);
+  };
+
+  // Update the logout function to close the submenu
+  const handleLogout = () => {
+    onLogout(); // Call the logout function
+    setSubMenuOpen(false); // Close the submenu
+  };
 
   return (
     <header className="navbar-header">
@@ -26,6 +40,44 @@ const Navbar = () => {
               </li>
               <li className="navbar-nav-item">
                 <Link to="/about" className="navbar-nav-link">About Us</Link>
+              </li>
+              {/* Show username or login links */}
+              <li className="navbar-nav-item navbar-login">
+                {username ? (
+                  <div
+                    className="navbar-user"
+                    onClick={toggleSubMenu}
+                    aria-haspopup="true" // Indicates that a popup is triggered
+                    aria-expanded={isSubMenuOpen} // Indicates the state of the submenu
+                  >
+                    {username}
+                    <span className="navbar-dropdown-indicator"> ▼</span> {/* Indicator for dropdown */}
+                  </div>
+                ) : (
+                  <>
+                    <Link to="/login" className="navbar-nav-link">Login</Link>
+                    <Link to="/create-account" className="navbar-nav-link">Create Account</Link>
+                  </>
+                )}
+                {/* Submenu for logged-in users */}
+                {isSubMenuOpen && (
+                  <ul className="navbar-submenu">
+                    <li className="navbar-submenu-item">
+                      <Link to="/View-My-Details" className="navbar-submenu-link">View My Details</Link>
+                    </li>
+                    <li className="navbar-submenu-item">
+                      <Link to="/update-account" className="navbar-submenu-link">Update Account</Link>
+                    </li>
+                    <li className="navbar-submenu-item">
+                      <span
+                        className="navbar-submenu-link cursor-pointer"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </span>
+                    </li>
+                  </ul>
+                )}
               </li>
             </ul>
           </nav>

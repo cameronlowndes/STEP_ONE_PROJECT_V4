@@ -67,4 +67,52 @@
     margin: 0; /* Remove default margin */
 }
 
-/* Hover effect for links */
+.navbar-login {
+
+    position: absolute; /* Position it absolutely */
+    top: 9px; /* Adjust the vertical position */
+    right: 60px; /* Adjust the horizontal position */
+    /* Optional styles */
+    padding: 0.5rem 1rem; /* Add some padding */
+    border: 1px solid white; /* Optional border */
+    border-radius: 4px; /* Optional rounded corners */
+}
+.navbar-submenu {
+    display: flex; 
+    top: 100%; /* Position below the main link */
+    left: 0;
+    background-color: lightgray; /* Background color for the submenu */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    list-style-type: none;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000; /* Ensure submenu appears above other elements */
+   
+  }
+  
+  .navbar-submenu-item {
+    padding: 5px 30px; /* Space within submenu items */
+
+  }
+  
+  .navbar-submenu-link {
+    text-decoration: none;
+    color: #333; /* Adjust color */
+        flex-direction: row; /* Arrange items in a row */
+  }
+  
+  .navbar-submenu-link:hover {
+    background-color: #f0f0f0; /* Hover effect for submenu */
+    border-radius: 4px; /* Rounded corners on hover */
+  }
+
+  .navbar-user {
+    cursor: pointer; /* Change cursor to pointer on hover for username */
+    position: relative; /* Ensure dropdown appears in relation to the username */
+  }
+
+  .navbar-login {
+    cursor: pointer; /* Change cursor to pointer on hover for login/logout */
+  }
+  
