@@ -1,24 +1,19 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi'; // Import eye icons
-import { useAuth } from './AuthContext'; // Import useAuth
+import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
+import { useAuth } from './AuthContext';
 
 const Login = () => {
-    const { login } = useAuth(); // Get login function from context
+    const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [showPassword, setShowPassword] = useState(false); // State for password visibility
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    // Test credentials for demonstration purposes
-    const TEST_EMAIL = 'admin@example.com';
-    const TEST_PASSWORD = 'adminpassword';
-    const TEST_ROLE = 'admin'; // Assume this comes from your authentication logic
-
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         if (email === '' || password === '') {
             setError('Please enter both email and password');
@@ -26,26 +21,36 @@ const Login = () => {
             return;
         }
 
-        if (email === TEST_EMAIL && password === TEST_PASSWORD) {
-            const username = email.split('@')[0];
-            // Create user object and pass it to login function
-            const user = { username, email, role: TEST_ROLE }; 
-            login(user); // Call login function with user object
+        try {
+            const response = await fetch('http://localhost:5000/api/users', { // Update with your backend URL
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Invalid email or password');
+            }
+
+            const user = await response.json();
+            login(user);
             setSuccess('Successfully logged in!');
             setTimeout(() => {
-                navigate('/'); // Redirect to home page after a brief moment
+                navigate('/'); 
             }, 1000);
-        } else {
-            setError('Invalid email or password. Please try again.');
+        } catch (err) {
+            setError(err.message);
             setSuccess('');
         }
     };
 
-    // Function to log in as admin for testing
-    const loginAsAdmin = () => {
-        setEmail(TEST_EMAIL);
-        setPassword(TEST_PASSWORD);
-        handleLogin({ preventDefault: () => {} }); // Call handleLogin without the event
+    // Function to auto-login as admin
+    const handleAdminLogin = () => {
+        setEmail('admin1@example.com'); // Replace with actual admin email
+        setPassword('admin123');  // Replace with actual admin password
+        handleLogin({ preventDefault: () => {} }); // Call the login function
     };
 
     return (
@@ -75,7 +80,7 @@ const Login = () => {
                             <FiLock className="text-gray-400" />
                         </div>
                         <input
-                            type={showPassword ? 'text' : 'password'} // Toggle between text and password
+                            type={showPassword ? 'text' : 'password'}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -84,7 +89,7 @@ const Login = () => {
                         />
                         <button
                             type="button"
-                            onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+                            onClick={() => setShowPassword(!showPassword)}
                             className="absolute inset-y-0 right-0 flex items-center pr-3"
                         >
                             {showPassword ? <FiEyeOff className="text-gray-400" /> : <FiEye className="text-gray-400" />}
@@ -98,10 +103,11 @@ const Login = () => {
                     </button>
                 </form>
                 <button
-                    onClick={loginAsAdmin} // Call the login function for admin
+                    type="button"
+                    onClick={handleAdminLogin}
                     className="w-full py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
                 >
-                    Login as Admin
+                    Auto Login as Admin
                 </button>
             </div>
         </div>
