@@ -9,19 +9,28 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate(); // Initialize useNavigate
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         
-        // Hardcoded credentials for testing
-        const adminCredentials = { email: 'admin@example.com', password: 'admin123' };
-        const userCredentials = { email: 'user@example.com', password: 'user123' };
+        try {
+            // API call to validate login credentials
+            const response = await fetch('/api/users', { // Adjusted URL to /api/users
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }), // Sending user data
+            });
 
-        if ((email === adminCredentials.email && password === adminCredentials.password) || 
-            (email === userCredentials.email && password === userCredentials.password)) {
-            login({ email, role: email === adminCredentials.email ? 'admin' : 'user' });
+            if (!response.ok) {
+                throw new Error('Invalid email or password');
+            }
+
+            const data = await response.json(); // Assuming your API returns user data
+            login({ email: data.email, role: data.role }); // Store user data in auth context
             navigate('/'); // Navigate to the home page
-        } else {
-            setError('Invalid email or password');
+        } catch (error) {
+            setError(error.message); // Set error message if the request fails
         }
     };
 
@@ -34,7 +43,7 @@ const Login = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
-                <h2 className="text-4xl font-bold text-center">Test Login</h2>
+                <h2 className="text-4xl font-bold text-center">Login</h2>
                 {error && <p className="text-red-500 text-center">{error}</p>}
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div>

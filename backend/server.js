@@ -29,10 +29,27 @@ pool.connect()
   .catch(err => console.error('Connection error', err.stack));
 
 // Endpoint to get all users
-app.get('/api/users', async (req, res) => { // Corrected line
+app.get('/api/users', async (req, res) => { // Ensure this matches your frontend fetch request
   try {
     const result = await pool.query('SELECT * FROM users');
     res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+// Endpoint to create a user
+app.post('/api/users', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const result = await pool.query(
+      'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *',
+      [username, email, hashedPassword]
+    );
+    res.status(201).json(result.rows[0]); // Send back the created user
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
