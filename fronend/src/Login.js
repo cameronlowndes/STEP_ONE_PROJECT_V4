@@ -1,111 +1,74 @@
-// src/components/Login.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthContext'; // Adjust the import based on your file structure
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Login = () => {
     const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Initialize useNavigate
 
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        if (email === '' || password === '') {
-            setError('Please enter both email and password');
-            setSuccess('');
-            return;
-        }
+        
+        // Hardcoded credentials for testing
+        const adminCredentials = { email: 'admin@example.com', password: 'admin123' };
+        const userCredentials = { email: 'user@example.com', password: 'user123' };
 
-        try {
-            const response = await fetch('http://localhost:5000/api/users', { // Update with your backend URL
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Invalid email or password');
-            }
-
-            const user = await response.json();
-            login(user);
-            setSuccess('Successfully logged in!');
-            setTimeout(() => {
-                navigate('/'); 
-            }, 1000);
-        } catch (err) {
-            setError(err.message);
-            setSuccess('');
+        if ((email === adminCredentials.email && password === adminCredentials.password) || 
+            (email === userCredentials.email && password === userCredentials.password)) {
+            login({ email, role: email === adminCredentials.email ? 'admin' : 'user' });
+            navigate('/'); // Navigate to the home page
+        } else {
+            setError('Invalid email or password');
         }
     };
 
     // Function to auto-login as admin
-    const handleAdminLogin = () => {
-        setEmail('admin1@example.com'); // Replace with actual admin email
-        setPassword('admin123');  // Replace with actual admin password
-        handleLogin({ preventDefault: () => {} }); // Call the login function
+    const handleAutoLogin = () => {
+        login({ email: 'admin@example.com', role: 'admin' });
+        navigate('/'); // Navigate to the home page after auto-login
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r bg-gray-100">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
-                <h2 className="text-4xl font-bold text-center text-gray-800">Login</h2>
+                <h2 className="text-4xl font-bold text-center">Test Login</h2>
                 {error && <p className="text-red-500 text-center">{error}</p>}
-                {success && <p className="text-green-500 text-center">{success}</p>}
                 <form onSubmit={handleLogin} className="space-y-4">
-                    <div className="relative">
-                        <label className="block mb-1 text-sm font-medium text-gray-700">Email:</label>
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-3" style={{ top: '20px' }}>
-                            <FiMail className="text-gray-400" />
-                        </div>
+                    <div>
+                        <label className="block mb-1 text-sm font-medium">Email:</label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full pl-10 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-400"
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none"
                             placeholder="Enter your email"
                         />
                     </div>
-                    <div className="relative">
-                        <label className="block mb-1 text-sm font-medium text-gray-700">Password:</label>
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-3" style={{ top: '20px' }}>
-                            <FiLock className="text-gray-400" />
-                        </div>
+                    <div>
+                        <label className="block mb-1 text-sm font-medium">Password:</label>
                         <input
-                            type={showPassword ? 'text' : 'password'}
+                            type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full pl-10 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-400"
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none"
                             placeholder="Enter your password"
                         />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute inset-y-0 right-0 flex items-center pr-3"
-                        >
-                            {showPassword ? <FiEyeOff className="text-gray-400" /> : <FiEye className="text-gray-400" />}
-                        </button>
                     </div>
                     <button
                         type="submit"
-                        className="w-full py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
+                        className="w-full py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-700"
                     >
                         Login
                     </button>
                 </form>
                 <button
-                    type="button"
-                    onClick={handleAdminLogin}
-                    className="w-full py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
+                    onClick={handleAutoLogin}
+                    className="mt-4 w-full py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-700"
                 >
                     Auto Login as Admin
                 </button>

@@ -1,4 +1,3 @@
-// src/components/AuthContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 // Create AuthContext
@@ -10,8 +9,8 @@ export const AuthProvider = ({ children }) => {
 
   // Function to log in the user
   const login = (user) => {
+    console.log('Logged in user:', user); // Debugging line
     setCurrentUser(user);
-    
   };
 
   // Function to log out the user
@@ -20,7 +19,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Determine if the current user is an admin
-  const isAdmin = currentUser && currentUser.role === 'admin'; // Modify this as per your logic
+  const isAdmin = currentUser && currentUser.role === 'admin';
 
   return (
     <AuthContext.Provider value={{ currentUser, login, logout, isAdmin }}>

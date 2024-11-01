@@ -23,11 +23,13 @@ const pool = new Pool({
 
 // Test the connection
 pool.connect()
-  .then(() => console.log('Connected to PostgreSQL database'))
+  .then(() => {
+    console.log('Connected to PostgreSQL database');
+  })
   .catch(err => console.error('Connection error', err.stack));
 
-// Endpoint to get all users at the root route
-app.get('/', async (req, res) => {
+// Endpoint to get all users
+app.get('/api/users', async (req, res) => { // Corrected line
   try {
     const result = await pool.query('SELECT * FROM users');
     res.json(result.rows);
