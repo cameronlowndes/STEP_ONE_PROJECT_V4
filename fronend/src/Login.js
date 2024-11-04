@@ -14,7 +14,7 @@ const Login = () => {
         
         try {
             // API call to validate login credentials
-            const response = await fetch('/api/users', { // Adjusted URL to /api/users
+            const response = await fetch('/api/login', { // Adjusted URL to /api/users
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
