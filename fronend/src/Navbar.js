@@ -1,30 +1,41 @@
-// src/components/Navbar.js
+// Navbar.js
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Import useLocation for active link
-import { useAuth } from './AuthContext'; // Import the custom hook
-import './navbar.css'; // Ensure this path is correct
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext'; // Import AuthContext for user info
+import './navbar.css';
 
 const Navbar = () => {
-  const { currentUser, logout } = useAuth(); // Get currentUser and logout function from context
-  const [isSubMenuOpen, setSubMenuOpen] = useState(false); // State for submenu visibility
-  const location = useLocation(); // Get current location for active links
-  const logo = `${process.env.PUBLIC_URL}/image/logo.jpg`; // Path to your logo
+  const { currentUser, logout } = useAuth();
+  const [isSubMenuOpen, setSubMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // State for logout confirmation modal
+  const location = useLocation();
+  const navigate = useNavigate();
+  const logo = `${process.env.PUBLIC_URL}/image/logo.jpg`;
 
-  // Function to toggle the submenu visibility
+  // Toggle submenu visibility
   const toggleSubMenu = () => {
     setSubMenuOpen((prev) => !prev);
   };
 
-  // Update the logout function to close the submenu
-  const handleLogout = () => {
-    if (window.confirm("Are you sure you want to logout?")) {
-      logout(); // Call the logout function
-      setSubMenuOpen(false); // Close the submenu
-    }
+  // Show the logout confirmation modal
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true); // Open the modal
+  };
+
+  // Handle the actual logout and close modal
+  const confirmLogout = () => {
+    logout();
+    setSubMenuOpen(false);
+    setShowLogoutModal(false); // Close the modal
+    navigate('/'); // Redirect to homepage
+  };
+
+  // Cancel logout action
+  const cancelLogout = () => {
+    setShowLogoutModal(false); // Close the modal without logging out
   };
 
   useEffect(() => {
-    // Close the submenu if the user logs out
     if (!currentUser) {
       setSubMenuOpen(false);
     }
@@ -55,19 +66,11 @@ const Navbar = () => {
               <li className="navbar-nav-item">
                 <Link to="/CommunityPage" className={`navbar-nav-link ${location.pathname === '/CommunityPage' ? 'active' : ''}`}>Community Page</Link>
               </li>
-              {/* Show username or login links */}
               <li className="navbar-nav-item navbar-login">
                 {currentUser ? (
-                  <div
-                    className="navbar-user"
-                    onClick={toggleSubMenu}
-                    aria-haspopup="true" // Indicates that a popup is triggered
-                    aria-expanded={isSubMenuOpen} // Indicates the state of the submenu
-                  >
-                    {/* Welcome message with highlighted username */}
-                    <span className="navbar-welcome-text">Welcome, </span>
-                    <span className="navbar-username">{currentUser.username}</span>
-                    <span className="navbar-dropdown-indicator"> ▼</span> {/* Indicator for dropdown */}
+                  <div className="navbar-user" onClick={toggleSubMenu} aria-haspopup="true" aria-expanded={isSubMenuOpen}>
+                    <span className="navbar-welcome-text">Welcome, {currentUser.usersname}</span>
+                    <span className="navbar-dropdown-indicator"> ▼</span>
                   </div>
                 ) : (
                   <>
@@ -75,7 +78,6 @@ const Navbar = () => {
                     <Link to="/create-account" className="navbar-nav-link">Create Account</Link>
                   </>
                 )}
-                {/* Submenu for logged-in users */}
                 {isSubMenuOpen && currentUser && (
                   <ul className="navbar-submenu">
                     <li className="navbar-submenu-item">
@@ -84,18 +86,15 @@ const Navbar = () => {
                     <li className="navbar-submenu-item">
                       <Link to="/update-account" className="navbar-submenu-link">Update Account</Link>
                     </li>
-                    {currentUser.role === 'admin' && ( // Check if user is an admin
+                    {currentUser.role === 'admin' && (
                       <li className="navbar-submenu-item">
                         <Link to="/admin-dashboard" className="navbar-submenu-link">Admin Dashboard</Link>
                       </li>
                     )}
                     <li className="navbar-submenu-item">
-                      <span
-                        className="navbar-submenu-link cursor-pointer"
-                        onClick={handleLogout}
-                      >
+                      <button className="navbar-submenu-link" onClick={handleLogoutClick}>
                         Logout
-                      </span>
+                      </button>
                     </li>
                   </ul>
                 )}
@@ -104,6 +103,17 @@ const Navbar = () => {
           </nav>
         </div>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="logout-modal-overlay">
+          <div className="logout-modal">
+            <p>Are you sure you want to logout?</p>
+            <button onClick={confirmLogout} className="logout-confirm-button">Yes</button>
+            <button onClick={cancelLogout} className="logout-cancel-button">No</button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

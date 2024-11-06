@@ -1,43 +1,42 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext'; // Adjust the import based on your file structure
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         
         try {
-            // API call to validate login credentials
-            const response = await fetch('/api/login', { // Adjusted URL to /api/users
+            const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }), // Sending user data
+                body: JSON.stringify({ email, password }),
             });
 
             if (!response.ok) {
                 throw new Error('Invalid email or password');
             }
 
-            const data = await response.json(); // Assuming your API returns user data
-            login({ email: data.email, role: data.role }); // Store user data in auth context
-            navigate('/'); // Navigate to the home page
+            const data = await response.json();
+            login({ email: data.email, role: data.role });
+            navigate('/');
         } catch (error) {
-            setError(error.message); // Set error message if the request fails
+            setError(error.message);
         }
     };
 
-    // Function to auto-login as admin
     const handleAutoLogin = () => {
         login({ email: 'admin@example.com', role: 'admin' });
-        navigate('/'); // Navigate to the home page after auto-login
+        navigate('/');
     };
 
     return (
@@ -60,13 +59,22 @@ const Login = () => {
                     <div>
                         <label className="block mb-1 text-sm font-medium">Password:</label>
                         <input
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             className="w-full p-2 border border-gray-300 rounded focus:outline-none"
                             placeholder="Enter your password"
                         />
+                        <div className="flex items-center mt-2">
+                            <input
+                                type="checkbox"
+                                checked={showPassword}
+                                onChange={() => setShowPassword((prev) => !prev)}
+                                className="mr-2"
+                            />
+                            <span>Show Password</span>
+                        </div>
                     </div>
                     <button
                         type="submit"

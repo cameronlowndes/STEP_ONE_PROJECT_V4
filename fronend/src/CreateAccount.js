@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiUser, FiMail, FiLock } from 'react-icons/fi';
+import { useAuth } from './AuthContext'; // Import the useAuth hook
 
-const CreateAccount = ({ onLogin }) => {
+const CreateAccount = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useAuth(); // Use login from AuthContext
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -28,16 +30,13 @@ const CreateAccount = ({ onLogin }) => {
         throw new Error(`Failed to create account: ${errorMessage}`);
       }
 
-      // Optionally, you can parse the response if you need to handle it
-      const userData = await createResponse.json();
-
       // Now log in the user with email and password using the same endpoint
-      const loginResponse = await fetch("http://localhost:5000/api/users/login", {
-        method: 'POST', // Use POST to log in, since the same endpoint is used
+      const loginResponse = await fetch("http://localhost:5000/api/login", {
+        method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, email, password }), // Send email and password for login
+        body: JSON.stringify({ email, password }), // Send email and password for login
       });
 
       // Check if the login response is not okay
@@ -51,8 +50,8 @@ const CreateAccount = ({ onLogin }) => {
       // Parse the login response JSON if successful
       const loginData = await loginResponse.json();
 
-      // Call onLogin to handle token storage and user data
-      onLogin(loginData.token); 
+      // Call login to handle user login and pass user details
+      login(loginData.user); // Pass the user details (including name) to AuthContext
       navigate('/'); // Redirect to home or dashboard
     } catch (error) {
       console.error("Error:", error.message);

@@ -1,34 +1,46 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
 
-// Create AuthContext
 const AuthContext = createContext();
 
-// Create a provider component
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null); // Manage the current user state
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const user = localStorage.getItem('currentUser');
+      return user ? JSON.parse(user) : null;
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      return null;
+    }
+  });
 
-  // Function to log in the user
+  useEffect(() => {
+    console.log('Current User:', currentUser);
+  }, [currentUser]);
+
   const login = (user) => {
-    console.log('Logged in user:', user); // Debugging line
-    setCurrentUser(user);
+    if (user?.email && user?.role) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      setCurrentUser(user);
+    }
   };
 
-  // Function to log out the user
   const logout = () => {
+    localStorage.removeItem('currentUser');
     setCurrentUser(null);
   };
 
-  // Determine if the current user is an admin
-  const isAdmin = currentUser && currentUser.role === 'admin';
+  const contextValue = useMemo(() => ({
+    currentUser,
+    login,
+    logout,
+    isAdmin: currentUser?.role === 'admin',
+  }), [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, isAdmin }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use the AuthContext
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
