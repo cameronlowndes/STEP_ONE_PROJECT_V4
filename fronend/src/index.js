@@ -14,7 +14,10 @@ import UpdateAccount from './UpdateAccount';
 import ViewMyDetails from './ViewMyDetails'; 
 import CommunityPage from './CommunityPage'; 
 import ForumPage from './Forum';
-import { AuthProvider, useAuth } from './AuthContext'; // Import AuthProvider and useAuth
+import { AuthProvider } from './AuthContext'; // Import AuthProvider
+
+// ProtectedRoute component to secure routes
+import ProtectedRoute from './ProtectedRoute';
 
 const App = () => {
   return (
@@ -27,25 +30,21 @@ const App = () => {
 };
 
 const Main = () => {
-  const { user, logout } = useAuth(); // Access user and logout from AuthContext
-
   return (
     <>
-      <Navbar username={user ? user.username : ''} onLogout={logout} />
+      <Navbar />
       <Routes>
         <Route path="/" element={<NovaMart />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/checkout" element={<Checkout />} /> 
-        <Route path="/login" element={<Login onLogin={logout} />} /> {/* Pass any necessary props */}
-        <Route path="/create-account" element={<CreateAccount onLogin={logout} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/CommunityPage" element={<CommunityPage />} />
         <Route path="/forum" element={<ForumPage />} />
-        <Route 
-          path="/update-account" 
-          element={<UpdateAccount />} 
-        />
-        <Route path="/view-my-details" element={<ViewMyDetails />} />
+        {/* Protected routes */}
+        <Route path="/update-account" element={<ProtectedRoute><UpdateAccount /></ProtectedRoute>} />
+        <Route path="/view-my-details" element={<ProtectedRoute><ViewMyDetails /></ProtectedRoute>} />
       </Routes>
     </>
   );

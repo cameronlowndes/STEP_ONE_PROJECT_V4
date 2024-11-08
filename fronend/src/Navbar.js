@@ -69,7 +69,7 @@ const Navbar = () => {
               <li className="navbar-nav-item navbar-login">
                 {currentUser ? (
                   <div className="navbar-user" onClick={toggleSubMenu} aria-haspopup="true" aria-expanded={isSubMenuOpen}>
-                    <span className="navbar-welcome-text">Welcome, {currentUser.usersname}</span>
+                    <span className="navbar-welcome-text">Welcome, {currentUser.email}</span>
                     <span className="navbar-dropdown-indicator"> ▼</span>
                   </div>
                 ) : (

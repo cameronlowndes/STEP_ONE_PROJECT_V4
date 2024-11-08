@@ -3,14 +3,15 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
-require('dotenv').config();
+const jwt = require('jsonwebtoken');  // Add the JWT package
+require('dotenv').config();  // Ensure this line is at the very top to load .env
 
 // Initialize app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors()); // Enable CORS for all origins (you may restrict it later)
+app.use(cors({ origin: 'http://localhost:3000' }));  // Configure CORS more securely
 app.use(express.json()); // Automatically parse JSON bodies in requests
 
 // PostgreSQL connection setup
@@ -34,7 +35,7 @@ app.get('/api/users', async (req, res) => {
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -49,7 +50,13 @@ app.post('/api/users', async (req, res) => {
     }
 
     // Hash the password before storing it
-    const hashedPassword = await bcrypt.hash(password, 10);
+    let hashedPassword;
+    try {
+      hashedPassword = await bcrypt.hash(password, 10);
+    } catch (err) {
+      console.error('Error hashing password:', err);
+      return res.status(500).json({ error: 'Error hashing password' });
+    }
 
     // Insert the new user into the database
     await pool.query(
@@ -57,10 +64,10 @@ app.post('/api/users', async (req, res) => {
       [username, email, hashedPassword]
     );
 
-    res.status(201).send('User created successfully');
+    res.status(201).json({ message: 'User created successfully' });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -83,11 +90,29 @@ app.post('/api/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid password' });
     }
 
-    // If the password matches, return user details (no JWT included)
-    res.status(200).json({ username: user.username, email: user.email });
+    // Check if JWT_SECRET is loaded properly
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not defined!');
+      return res.status(500).json({ error: 'JWT_SECRET not defined in .env file' });
+    }
+
+    // Log the secret value (for debugging purposes)
+    console.log('JWT_SECRET:', process.env.JWT_SECRET);  // This should print the secret value
+
+    // Create JWT token (using the user data)
+    const payload = {
+      userId: user.id,
+      username: user.username,
+      email: user.email
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // Send the token as part of the response
+    res.status(200).json({ message: 'Login successful', token });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

@@ -1,61 +1,64 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiUser, FiMail, FiLock } from 'react-icons/fi';
-import { useAuth } from './AuthContext'; // Import the useAuth hook
+import { useAuth } from './AuthContext';
+import Footer from './Footer';
 
 const CreateAccount = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuth(); // Use login from AuthContext
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(''); // Clear any previous errors
+
+    // Basic validation
+    if (!email || !password || !username) {
+      setError("All fields are required.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      // Attempt to create a user account
+      // Create user request
       const createResponse = await fetch("http://localhost:5000/api/users", {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
       });
 
-      // Check if the account creation was successful
       if (!createResponse.ok) {
-        const errorMessage = await createResponse.text();
-        throw new Error(`Failed to create account: ${errorMessage}`);
+        const errorMessage = await createResponse.json();
+        throw new Error(`Failed to create account: ${errorMessage.error || 'Unknown error'}`);
       }
 
-      // Now log in the user with email and password using the same endpoint
+      // Log in after account creation
       const loginResponse = await fetch("http://localhost:5000/api/login", {
-        method: 'POST', 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }), // Send email and password for login
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
 
-      // Check if the login response is not okay
       if (!loginResponse.ok) {
-        const errorMessage = await loginResponse.text();
-        console.error(`Login failed: ${errorMessage}`);
-        setError(`Login failed: ${errorMessage}`); // Display error message to the user
-        return; // Exit early if login fails
+        const errorMessage = await loginResponse.json();
+        setError(`Login failed: ${errorMessage.error || 'Unknown error'}`);
+        return;
       }
 
-      // Parse the login response JSON if successful
       const loginData = await loginResponse.json();
-
-      // Call login to handle user login and pass user details
-      login(loginData.user); // Pass the user details (including name) to AuthContext
-      navigate('/'); // Redirect to home or dashboard
+      login(loginData.user);
+      navigate('/');  // Redirect after login
     } catch (error) {
-      console.error("Error:", error.message);
-      setError(error.message); // Display error message to the user
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,68 +69,79 @@ const CreateAccount = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r bg-gray-100">
-      <h2 className="text-4xl font-bold mb-6 text-black">Create Your Account</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg w-96 space-y-4">
-        {/* Username input */}
-        <div className="relative">
-          <label className="block mb-1 text-sm font-medium text-gray-700">Username:</label>
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3" style={{ top: '20px' }}>
-            <FiUser className="text-gray-400" />
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-grow flex flex-col items-center justify-center bg-gray-100">
+        <h2 className="text-4xl font-bold mb-6 text-black">Create Your Account</h2>
+        {error && <div className="bg-red-100 text-red-700 p-4 rounded mb-4 w-full max-w-md text-center">{error}</div>}
+        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4">
+          <div className="relative">
+            <label className="block mb-1 text-sm font-medium text-gray-700">Username:</label>
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3" style={{ top: '20px' }}>
+              <FiUser className="text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="border border-gray-300 p-2 pl-10 rounded w-full focus:outline-none focus:ring focus:ring-blue-400"
+            />
           </div>
-          <input
-            type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="border border-gray-300 p-2 pl-10 rounded w-full focus:outline-none focus:ring focus:ring-blue-400"
-          />
-        </div>
-        {/* Email input */}
-        <div className="relative">
-          <label className="block mb-1 text-sm font-medium text-gray-700">Email:</label>
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3" style={{ top: '20px' }}>
-            <FiMail className="text-gray-400" />
+          <div className="relative">
+            <label className="block mb-1 text-sm font-medium text-gray-700">Email:</label>
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3" style={{ top: '20px' }}>
+              <FiMail className="text-gray-400" />
+            </div>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="border border-gray-300 p-2 pl-10 rounded w-full focus:outline-none focus:ring focus:ring-blue-400"
+            />
           </div>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="border border-gray-300 p-2 pl-10 rounded w-full focus:outline-none focus:ring focus:ring-blue-400"
-          />
-        </div>
-        {/* Password input */}
-        <div className="relative">
-          <label className="block mb-1 text-sm font-medium text-gray-700">Password:</label>
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3" style={{ top: '20px' }}>
-            <FiLock className="text-gray-400" />
+          <div className="relative">
+            <label className="block mb-1 text-sm font-medium text-gray-700">Password:</label>
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3" style={{ top: '4px' }}>
+              <FiLock className="text-gray-400" />
+            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="border border-gray-300 p-2 pl-10 rounded w-full focus:outline-none focus:ring focus:ring-blue-400"
+            />
+            <div className="flex items-center mt-2">
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+                className="mr-2"
+              />
+              <span className="text-sm text-gray-600">Show Password</span>
+            </div>
           </div>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="border border-gray-300 p-2 pl-10 rounded w-full focus:outline-none focus:ring focus:ring-blue-400"
-          />
-        </div>
-        <button 
-          type="submit" 
-          className="bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600 w-full transition duration-200">
-          Create Account
-        </button>
-        <button
-          type="button"
-          onClick={handleAutoFill}
-          className="bg-gray-300 text-gray-700 font-bold py-2 rounded hover:bg-gray-400 w-full transition duration-200"
-        >
-          Auto Fill for Testing
-        </button>
-      </form>
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600 w-full transition duration-200"
+          >
+            {loading ? 'Creating Account...' : 'Create Account'}
+          </button>
+          <button
+            type="button"
+            onClick={handleAutoFill}
+            className="bg-gray-300 text-gray-700 font-bold py-2 rounded hover:bg-gray-400 w-full transition duration-200"
+          >
+            Auto Fill for Testing
+          </button>
+        </form>
+      </div>
+      <Footer />
     </div>
   );
 };

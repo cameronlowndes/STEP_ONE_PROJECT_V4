@@ -13,8 +13,21 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         
+        // Basic validation (could be expanded)
+        if (!email || !password) {
+            setError('Email and password are required');
+            return;
+        }
+
+        // Email format validation
+        const isValidEmail = /\S+@\S+\.\S+/;
+        if (!isValidEmail.test(email)) {
+            setError('Invalid email format');
+            return;
+        }
+
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('http://localhost:5000/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,6 +48,7 @@ const Login = () => {
     };
 
     const handleAutoLogin = () => {
+        // For testing only - ensure this is not used in production
         login({ email: 'admin@example.com', role: 'admin' });
         navigate('/');
     };
@@ -46,22 +60,30 @@ const Login = () => {
                 {error && <p className="text-red-500 text-center">{error}</p>}
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div>
-                        <label className="block mb-1 text-sm font-medium">Email:</label>
+                        <label htmlFor="email" className="block mb-1 text-sm font-medium">Email:</label>
                         <input
+                            id="email"
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                setError(''); // Clear error on input change
+                            }}
                             required
                             className="w-full p-2 border border-gray-300 rounded focus:outline-none"
                             placeholder="Enter your email"
                         />
                     </div>
                     <div>
-                        <label className="block mb-1 text-sm font-medium">Password:</label>
+                        <label htmlFor="password" className="block mb-1 text-sm font-medium">Password:</label>
                         <input
+                            id="password"
                             type={showPassword ? 'text' : 'password'}
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                setError(''); // Clear error on input change
+                            }}
                             required
                             className="w-full p-2 border border-gray-300 rounded focus:outline-none"
                             placeholder="Enter your password"
@@ -83,12 +105,14 @@ const Login = () => {
                         Login
                     </button>
                 </form>
-                <button
-                    onClick={handleAutoLogin}
-                    className="mt-4 w-full py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-700"
-                >
-                    Auto Login as Admin
-                </button>
+                {process.env.NODE_ENV === 'development' && (
+                    <button
+                        onClick={handleAutoLogin}
+                        className="mt-4 w-full py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-700"
+                    >
+                        Auto Login as Admin
+                    </button>
+                )}
             </div>
         </div>
     );
